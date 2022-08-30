@@ -1,0 +1,11 @@
+.calWrapper {
+    table {
+        border-collapse: collapse;
+        border: 1px solid;
+        empty-cells: show;
+
+        td, th {
+            border: 1px solid;
+        }
+    }
+}

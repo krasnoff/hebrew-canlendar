@@ -25,7 +25,17 @@ function Cal(props: Props) {
         
     }, []);
 
-    const buildDateObj = (today: Date) => {
+    const buildMonthObj = (buildDateObj: Array<DayObj>) => {
+        const weeksArr = [];
+        const dayIndex = 0;
+        do {
+            for (let index = 0; index < 7; index++) {
+                
+            }
+        } while (dayIndex < buildDateObj.length)
+    }
+
+    const buildDateObj = (today: Date): Array<DayObj> => {
         console.log('buildDateObj');
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];

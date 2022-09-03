@@ -3,5 +3,4 @@ export interface DayObj {
     HebrewDate: string;
     DayOfWeek: number;
     ButtonDate: Date;
-    weekIndex?: number;
 }

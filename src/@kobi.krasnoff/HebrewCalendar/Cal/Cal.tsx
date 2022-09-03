@@ -3,6 +3,7 @@ import { Language } from "../enums/language";
 import { WeekdaysEnglish } from "../enums/WeekDaysEnglish";
 import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
+import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss'
 
 interface Props {
@@ -13,30 +14,40 @@ interface Props {
 
 function Cal(props: Props) {
     const [SelectedEnum, setSelectedEnum] = useState<Array<WeekdaysHebrew | WeekdaysEnglish>>()
-    const [MonthDates, setMonthDates] = useState<Array<DayObj>>();
-    let arr = [];
+    const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
     
-    useEffect(() => {
-        // console.log('useEffect')
-        setDatesNames();
-        if (arr.length === 0) {
-            arr = buildDateObj(new Date());
-        }
+    // build the whole calendar object
+    const buildMonthObj = (buildDateObj: Array<DayObj>): Array<WeekDateArray> => {
+        let weeksArr: WeekDateArray = [];
+        const monthArr: Array<WeekDateArray> = [];
+        let buildDateObjIndex = 0;
         
-    }, []);
-
-    const buildMonthObj = (buildDateObj: Array<DayObj>) => {
-        const weeksArr = [];
-        const dayIndex = 0;
-        do {
-            for (let index = 0; index < 7; index++) {
-                
+        // first week of the month
+        const firstDayOfWeek = buildDateObj[0].DayOfWeek;
+        for (let index = 0; index < 7; index++) {
+            if (index < firstDayOfWeek) {
+                weeksArr.push(undefined);
+            } else {
+                weeksArr.push(buildDateObj[buildDateObjIndex]);
+                buildDateObjIndex++;
             }
-        } while (dayIndex < buildDateObj.length)
+        }
+        monthArr.push(weeksArr);
+        
+        do {
+            weeksArr = [];
+
+            for (let index = 0; index < 7; index++) {
+                weeksArr.push(buildDateObj[buildDateObjIndex]);
+                buildDateObjIndex++;
+            }
+            monthArr.push(weeksArr);
+        } while (buildDateObjIndex < buildDateObj.length);
+
+        return monthArr;
     }
 
     const buildDateObj = (today: Date): Array<DayObj> => {
-        console.log('buildDateObj');
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];
         for (let i = 0; i < numberOfDays; i++) {
@@ -58,7 +69,7 @@ function Cal(props: Props) {
             return 31;
         } else if (monthIndex === 4 || monthIndex === 6 || monthIndex === 9 || monthIndex === 11) {
             return 30;
-        } else if (monthIndex == 2) {
+        } else if (monthIndex === 2) {
             if (year % 4 === 0) {
                 if (year % 400 === 0) {
                     return 29;
@@ -98,6 +109,17 @@ function Cal(props: Props) {
             setSelectedEnum(weekday);
         }
     }
+
+    useEffect(() => {
+        // console.log('useEffect')
+        setDatesNames();
+        if (MonthDates.length === 0) {
+            const res = buildMonthObj(buildDateObj(new Date()));
+            setMonthDates(res);
+            // console.log('res', res);
+        }
+        
+    }, []);
     
     return (
         <div className={styles.calWrapper}>
@@ -113,9 +135,11 @@ function Cal(props: Props) {
                         <th>{SelectedEnum ? SelectedEnum[6] : ''}</th>
                     </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                {MonthDates ? <tbody>
+                    { MonthDates.map((el, index) => <tr key={index}>
+                        {el.map((el, index) => <td key={index}>{el?.ButtonDate.getDate()}</td>)}
+                    </tr>) }
+                </tbody> : null}
             </table>
         </div>
     );

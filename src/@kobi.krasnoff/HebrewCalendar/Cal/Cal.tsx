@@ -124,6 +124,16 @@ function Cal(props: Props) {
         buildComponent();
         
     }, [buildComponent]);
+
+    const handleKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>, obj: DayObj) => {
+        if (evt.key === 'Enter') {
+            console.log('handleKeyDown', evt, obj)
+        }
+    }
+
+    const handleClick = (obj: DayObj) => {
+        console.log('handleClick', obj)
+    }
     
     return (
         <div className={styles.calWrapper}>
@@ -141,7 +151,11 @@ function Cal(props: Props) {
                 </thead>
                 {MonthDates ? <tbody>
                     { MonthDates.map((el, index) => <tr key={index}>
-                        {el.map((el, index) => <td key={index}>{el?.ButtonDate.getDate()}</td>)}
+                        {el.map((el, index) => <td key={index}>
+                            {el ?
+                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>{el?.ButtonDate.getDate()}</div>
+                            : null}
+                        </td>)}
                     </tr>) }
                 </tbody> : null}
             </table>

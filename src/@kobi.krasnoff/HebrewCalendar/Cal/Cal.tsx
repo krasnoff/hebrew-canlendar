@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Language } from "../enums/language";
 import { WeekdaysEnglish } from "../enums/WeekDaysEnglish";
 import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
@@ -47,7 +47,7 @@ function Cal(props: Props) {
         return monthArr;
     }
 
-    const buildDateObj = (today: Date): Array<DayObj> => {
+    const buildDateObj = useCallback((today: Date): Array<DayObj> => {
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];
         for (let i = 0; i < numberOfDays; i++) {
@@ -61,7 +61,7 @@ function Cal(props: Props) {
             arr.push(el);
         }
         return arr;
-    };
+    }, []);
 
     const getNumbersPerDay = (monthIndex: number, year: number) => {
         monthIndex++;
@@ -86,7 +86,7 @@ function Cal(props: Props) {
         }
     }
 
-    const setDatesNames = () => {
+    const setDatesNames = useCallback(() => {
         if (props.language && props.language === Language.Hebrew) {
             const weekday: Array<WeekdaysHebrew> = [];
             weekday.push(WeekdaysHebrew.Sunday);
@@ -108,9 +108,9 @@ function Cal(props: Props) {
             weekday.push(WeekdaysEnglish.Saturday);
             setSelectedEnum(weekday);
         }
-    }
+    }, [props.language]);
 
-    useEffect(() => {
+    const buildComponent = useCallback(() => {
         // console.log('useEffect')
         setDatesNames();
         if (MonthDates.length === 0) {
@@ -118,8 +118,12 @@ function Cal(props: Props) {
             setMonthDates(res);
             // console.log('res', res);
         }
+    }, [MonthDates.length, buildDateObj, setDatesNames]);
+
+    useEffect(() => {
+        buildComponent();
         
-    }, []);
+    }, [buildComponent]);
     
     return (
         <div className={styles.calWrapper}>

@@ -4,7 +4,8 @@ import { WeekdaysEnglish } from "../enums/WeekDaysEnglish";
 import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
-import styles from './Cal.module.scss'
+import styles from './Cal.module.scss';
+import {HebrewCalendar, HDate, Location, Event} from '@hebcal/core';
 
 interface Props {
     language?: Language,
@@ -133,6 +134,24 @@ function Cal(props: Props) {
 
     const handleClick = (obj: DayObj) => {
         console.log('handleClick', obj)
+
+        const options = {
+            year: 2022,
+            month: 9,
+            isHebrewYear: false,
+            candlelighting: true,
+            location: Location.lookup('Tel Aviv'),
+            sedrot: true,
+            omer: true,
+            locale: 'he'
+          };
+          const events = HebrewCalendar.calendar(options);
+          
+          for (const ev of events) {
+            const hd = ev.getDate();
+            const date = hd.greg();
+            console.log(date.toLocaleDateString(), ev.render(), hd.toString());
+          }
     }
     
     return (

@@ -1,6 +1,8 @@
+import { HDate } from "@hebcal/core";
+
 export interface DayObj {
     internationalDate: number;
-    HebrewDate: string;
+    HebrewDate: HDate;
     DayOfWeek: number;
     ButtonDate: Date;
 }

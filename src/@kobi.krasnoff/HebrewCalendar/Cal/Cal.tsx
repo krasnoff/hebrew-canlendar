@@ -5,7 +5,8 @@ import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {HebrewCalendar, HDate, Location, Event} from '@hebcal/core';
+import {gematriya, HDate} from '@hebcal/core';
+
 
 interface Props {
     language?: Language,
@@ -16,6 +17,8 @@ interface Props {
 function Cal(props: Props) {
     const [SelectedEnum, setSelectedEnum] = useState<Array<WeekdaysHebrew | WeekdaysEnglish>>()
     const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
+    const [FirstDayMonth, setFirstDayMonth] = useState<DayObj>();
+    const [LastDayMonth, setLastDayMonth] = useState<DayObj>();
     
     // build the whole calendar object
     const buildMonthObj = (buildDateObj: Array<DayObj>): Array<WeekDateArray> => {
@@ -57,10 +60,12 @@ function Cal(props: Props) {
                 internationalDate: i + 1,
                 ButtonDate: ButtonDate,
                 DayOfWeek: ButtonDate.getDay(),
-                HebrewDate: ''
+                HebrewDate: new HDate(ButtonDate)
             }
             arr.push(el);
         }
+        setFirstDayMonth(arr[0]);
+        setLastDayMonth(arr[arr.length - 1]);
         return arr;
     }, []);
 
@@ -135,27 +140,45 @@ function Cal(props: Props) {
     const handleClick = (obj: DayObj) => {
         console.log('handleClick', obj)
 
-        const options = {
-            year: 2022,
-            month: 9,
-            isHebrewYear: false,
-            candlelighting: true,
-            location: Location.lookup('Tel Aviv'),
-            sedrot: true,
-            omer: true,
-            locale: 'he'
-          };
-          const events = HebrewCalendar.calendar(options);
+        // const options = {
+        //     year: 2022,
+        //     month: 9,
+        //     isHebrewYear: false,
+        //     candlelighting: true,
+        //     location: Location.lookup('Tel Aviv'),
+        //     sedrot: true,
+        //     omer: true,
+        //     locale: 'en'
+        //   };
+        //   const events = HebrewCalendar.calendar(options);
           
-          for (const ev of events) {
-            const hd = ev.getDate();
-            const date = hd.greg();
-            console.log(date.toLocaleDateString(), ev.render(), hd.toString());
-          }
+        //   for (const ev of events) {
+        //     const hd = ev.getDate();
+        //     const date = hd.greg();
+        //     console.log(date.toLocaleDateString(), ev.render(), hd.toString());
+        //   }
+
+        // const hd2 = new HDate(obj.ButtonDate);
+        // console.log('HDate', hd2);
+        // console.log('HDate', gematriya(hd2.getDay()));
+        // console.log('HDate', gematriya(hd2.getFullYear()));
+        // console.log('HDate', hd2.getMonthName());
+        // console.log('HDate', hd2.render('he'));
+    }
+
+    const getHebMonthName = (hd: HDate | undefined): string => {
+        if (hd) {
+            const render = hd.render('he');
+            const renderArr = render.toString().split(/\,/gi);
+            const render2 = renderArr.toString().split(/ /gi);
+            return render2[1];
+        }
+        return '';
     }
     
     return (
         <div className={styles.calWrapper}>
+            {getHebMonthName(FirstDayMonth?.HebrewDate)}
             <table>
                 <thead>
                     <tr>
@@ -172,7 +195,10 @@ function Cal(props: Props) {
                     { MonthDates.map((el, index) => <tr key={index}>
                         {el.map((el, index) => <td key={index}>
                             {el ?
-                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>{el?.ButtonDate.getDate()}</div>
+                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>
+                                    <div>{el?.ButtonDate.getDate()}</div>
+                                    <div>{gematriya(el.HebrewDate.getDate())}</div>
+                                </div>
                             : null}
                         </td>)}
                     </tr>) }

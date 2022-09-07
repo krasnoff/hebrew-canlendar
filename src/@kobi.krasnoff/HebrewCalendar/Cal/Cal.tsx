@@ -5,7 +5,8 @@ import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {gematriya, HDate} from '@hebcal/core';
+import {gematriya, HDate, months} from '@hebcal/core';
+import { MonthsArr } from "../enums/months";
 
 
 interface Props {
@@ -168,17 +169,46 @@ function Cal(props: Props) {
 
     const getHebMonthName = (hd: HDate | undefined): string => {
         if (hd) {
-            const render = hd.render('he');
-            const renderArr = render.toString().split(/\,/gi);
-            const render2 = renderArr.toString().split(/ /gi);
-            return render2[1];
+            switch (hd.getMonth()) {
+                case 1:
+                    return MonthsArr.NISAN;
+                case 2:
+                    return MonthsArr.IYYAR;
+                case 3:
+                    return MonthsArr.SIVAN;
+                case 4:
+                    return MonthsArr.TAMUZ;
+                case 5:
+                    return MonthsArr.AV;
+                case 6:
+                    return MonthsArr.ELUL;
+                case 7:
+                    return MonthsArr.TISHREI;
+                case 8:
+                    return MonthsArr.CHESHVAN;
+                case 9:
+                    return MonthsArr.KISLEV;
+                case 10:
+                    return MonthsArr.TEVET;
+                case 11:
+                    return MonthsArr.SHVAT;
+                case 12:
+                    return MonthsArr.ADAR_I;
+                case 13:
+                    return MonthsArr.ADAR_II;
+                default:
+                    return '';
+            }
         }
         return '';
     }
     
     return (
         <div className={styles.calWrapper}>
-            {getHebMonthName(FirstDayMonth?.HebrewDate)}
+            <div className={styles.hebTitle}>
+                {getHebMonthName(FirstDayMonth?.HebrewDate)} {gematriya((FirstDayMonth as DayObj).HebrewDate.getFullYear())} - 
+                {getHebMonthName(LastDayMonth?.HebrewDate)} {gematriya((LastDayMonth as DayObj).HebrewDate.getFullYear())}
+            </div>
             <table>
                 <thead>
                     <tr>

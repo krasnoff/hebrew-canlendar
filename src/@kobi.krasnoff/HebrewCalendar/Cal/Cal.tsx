@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Language } from "../enums/language";
 import { WeekdaysEnglish } from "../enums/WeekDaysEnglish";
 import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {gematriya, HDate, months} from '@hebcal/core';
+import {gematriya, HDate} from '@hebcal/core';
 import { MonthsArr } from "../enums/months";
 
 
@@ -20,6 +20,10 @@ function Cal(props: Props) {
     const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
     const [FirstDayMonth, setFirstDayMonth] = useState<DayObj>();
     const [LastDayMonth, setLastDayMonth] = useState<DayObj>();
+    const [selectedYear, setSelectedYear] = useState<string>('');
+    const [selectedMonth, setSelectedMonth] = useState<number>(0);
+    const selectedYearContainer = useRef<HTMLInputElement>(null);
+    const selectedMonthContainer = useRef<HTMLSelectElement>(null);
     
     // build the whole calendar object
     const buildMonthObj = (buildDateObj: Array<DayObj>): Array<WeekDateArray> => {
@@ -118,12 +122,13 @@ function Cal(props: Props) {
     }, [props.language]);
 
     const buildComponent = useCallback(() => {
-        // console.log('useEffect')
         setDatesNames();
         if (MonthDates.length === 0) {
-            const res = buildMonthObj(buildDateObj(new Date()));
+            const newDate = new Date();
+            const res = buildMonthObj(buildDateObj(newDate));
             setMonthDates(res);
-            // console.log('res', res);
+            setSelectedYear(newDate.getFullYear().toString());
+            setSelectedMonth(newDate.getMonth());
         }
     }, [MonthDates.length, buildDateObj, setDatesNames]);
 
@@ -202,9 +207,48 @@ function Cal(props: Props) {
         }
         return '';
     }
+
+    const handleSelectedYearChange = (evt: ChangeEvent) => {
+        setSelectedYear(selectedYearContainer.current?.value as string);
+    }
+
+    const handleSelectedMonthChange = (evt: ChangeEvent) => {
+        setSelectedMonth(parseInt(selectedMonthContainer.current?.value as string));
+    }
     
     return (
         <div className={styles.calWrapper}>
+            <div className={styles.controllers}>
+                <div><input 
+                    type="text" 
+                    maxLength={4}
+                    onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    value={selectedYear}
+                    onChange={(evt: ChangeEvent) => handleSelectedYearChange(evt)}
+                    ref={selectedYearContainer}>
+                    </input></div>
+                <div><select 
+                            ref={selectedMonthContainer}
+                            value={selectedMonth}
+                            onChange={(evt: ChangeEvent) => handleSelectedMonthChange(evt)}>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select></div>
+            </div>
             <div className={styles.hebTitle}>
                 {FirstDayMonth?.HebrewDate ? <span>{getHebMonthName(FirstDayMonth?.HebrewDate)} {gematriya((FirstDayMonth as DayObj).HebrewDate.getFullYear())} -</span> : null}
                 {LastDayMonth?.HebrewDate ? <span>{getHebMonthName(LastDayMonth?.HebrewDate)} {gematriya((LastDayMonth as DayObj).HebrewDate.getFullYear())}</span> : null}

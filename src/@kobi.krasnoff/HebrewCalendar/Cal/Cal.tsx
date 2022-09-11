@@ -182,8 +182,11 @@ function Cal(props: Props) {
     }
 
     const handleSelectedYearChange = (evt: ChangeEvent) => {
-        console.log('selectedYearContainer.current?.value', selectedYearContainer.current?.value);
-        setSelectedYear(parseInt(selectedYearContainer.current?.value as string));
+        let selectedYear = parseInt(selectedYearContainer.current?.value as string);
+        if (isNaN(selectedYear)) {
+            selectedYear = 1;
+        }
+        setSelectedYear(selectedYear);
     }
 
     const handleSelectedMonthChange = (evt: ChangeEvent) => {

@@ -20,8 +20,8 @@ function Cal(props: Props) {
     const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
     const [FirstDayMonth, setFirstDayMonth] = useState<DayObj>();
     const [LastDayMonth, setLastDayMonth] = useState<DayObj>();
-    const [selectedYear, setSelectedYear] = useState<string>('');
-    const [selectedMonth, setSelectedMonth] = useState<number>(0);
+    const [selectedYear, setSelectedYear] = useState<string>((new Date()).getFullYear().toString());
+    const [selectedMonth, setSelectedMonth] = useState<number>((new Date()).getMonth());
     const selectedYearContainer = useRef<HTMLInputElement>(null);
     const selectedMonthContainer = useRef<HTMLSelectElement>(null);
     
@@ -121,21 +121,19 @@ function Cal(props: Props) {
         }
     }, [props.language]);
 
-    const buildComponent = useCallback(() => {
+    const buildComponent = useCallback((dateObj: Date) => {
         setDatesNames();
-        if (MonthDates.length === 0) {
-            const newDate = new Date();
-            const res = buildMonthObj(buildDateObj(newDate));
+        // if (MonthDates.length === 0) {
+            const res = buildMonthObj(buildDateObj(dateObj));
             setMonthDates(res);
-            setSelectedYear(newDate.getFullYear().toString());
-            setSelectedMonth(newDate.getMonth());
-        }
-    }, [MonthDates.length, buildDateObj, setDatesNames]);
+            setSelectedYear(dateObj.getFullYear().toString());
+            setSelectedMonth(dateObj.getMonth());
+        // }
+    }, [buildDateObj, setDatesNames]);
 
-    useEffect(() => {
-        buildComponent();
-        
-    }, [buildComponent]);
+    
+
+
 
     const handleKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>, obj: DayObj) => {
         if (evt.key === 'Enter') {
@@ -145,31 +143,6 @@ function Cal(props: Props) {
 
     const handleClick = (obj: DayObj) => {
         console.log('handleClick', obj)
-
-        // const options = {
-        //     year: 2022,
-        //     month: 9,
-        //     isHebrewYear: false,
-        //     candlelighting: true,
-        //     location: Location.lookup('Tel Aviv'),
-        //     sedrot: true,
-        //     omer: true,
-        //     locale: 'en'
-        //   };
-        //   const events = HebrewCalendar.calendar(options);
-          
-        //   for (const ev of events) {
-        //     const hd = ev.getDate();
-        //     const date = hd.greg();
-        //     console.log(date.toLocaleDateString(), ev.render(), hd.toString());
-        //   }
-
-        // const hd2 = new HDate(obj.ButtonDate);
-        // console.log('HDate', hd2);
-        // console.log('HDate', gematriya(hd2.getDay()));
-        // console.log('HDate', gematriya(hd2.getFullYear()));
-        // console.log('HDate', hd2.getMonthName());
-        // console.log('HDate', hd2.render('he'));
     }
 
     const getHebMonthName = (hd: HDate | undefined): string => {
@@ -215,6 +188,13 @@ function Cal(props: Props) {
     const handleSelectedMonthChange = (evt: ChangeEvent) => {
         setSelectedMonth(parseInt(selectedMonthContainer.current?.value as string));
     }
+
+    useEffect(() => {
+        const newDate = new Date(Number.parseInt(selectedYear), selectedMonth, 1);
+        console.log('set New Month', newDate)
+        buildComponent(newDate);
+        
+    }, [selectedYear, selectedMonth, buildComponent]);
     
     return (
         <div className={styles.calWrapper}>

@@ -20,7 +20,7 @@ function Cal(props: Props) {
     const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
     const [FirstDayMonth, setFirstDayMonth] = useState<DayObj>();
     const [LastDayMonth, setLastDayMonth] = useState<DayObj>();
-    const [selectedYear, setSelectedYear] = useState<string>((new Date()).getFullYear().toString());
+    const [selectedYear, setSelectedYear] = useState<number>((new Date()).getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>((new Date()).getMonth());
     const selectedYearContainer = useRef<HTMLInputElement>(null);
     const selectedMonthContainer = useRef<HTMLSelectElement>(null);
@@ -126,8 +126,8 @@ function Cal(props: Props) {
         // if (MonthDates.length === 0) {
             const res = buildMonthObj(buildDateObj(dateObj));
             setMonthDates(res);
-            setSelectedYear(dateObj.getFullYear().toString());
-            setSelectedMonth(dateObj.getMonth());
+            // setSelectedYear(dateObj.getFullYear());
+            // setSelectedMonth(dateObj.getMonth());
         // }
     }, [buildDateObj, setDatesNames]);
 
@@ -182,7 +182,8 @@ function Cal(props: Props) {
     }
 
     const handleSelectedYearChange = (evt: ChangeEvent) => {
-        setSelectedYear(selectedYearContainer.current?.value as string);
+        console.log('selectedYearContainer.current?.value', selectedYearContainer.current?.value);
+        setSelectedYear(parseInt(selectedYearContainer.current?.value as string));
     }
 
     const handleSelectedMonthChange = (evt: ChangeEvent) => {
@@ -190,7 +191,7 @@ function Cal(props: Props) {
     }
 
     useEffect(() => {
-        const newDate = new Date(Number.parseInt(selectedYear), selectedMonth, 1);
+        const newDate = new Date(selectedYear, selectedMonth, 1);
         console.log('set New Month', newDate)
         buildComponent(newDate);
         

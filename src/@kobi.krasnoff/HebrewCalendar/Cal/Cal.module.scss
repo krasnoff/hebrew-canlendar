@@ -1,6 +1,10 @@
 .calWrapper {
+    min-width: 20rem;
+    
     .controllers {
-        
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
     }
     
     .hebTitle {
@@ -11,6 +15,7 @@
         border-collapse: collapse;
         border: 1px solid;
         empty-cells: show;
+        width: 100%;
 
         td, th {
             border: 1px solid;

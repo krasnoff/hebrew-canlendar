@@ -1,0 +1,31 @@
+{
+    "name": "videoframebyframe",
+    "version": "0.9.0",
+    "description": "this is a reactJs video component which a hebrew calendar",
+    "main": "Cal.tsx",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "clean": "rm -rf dist",
+      "build": "tsc && cp -r package.json README.md FramedVideo.module.scss icons hooks enums components ./dist"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/krasnoff/hebrew-canlendar.git"
+    },
+    "keywords": [
+      "reactjs",
+      "video"
+    ],
+    "author": "Kobi Krasnoff",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/krasnoff/hebrew-canlendar/issues"
+    },
+    "homepage": "https://github.com/krasnoff/hebrew-canlendar#readme",
+    "dependencies": {
+      "node-sass": "^7.0.1",
+      "react": "^18.1.0",
+      "@hebcal/core": "^3.42.3"
+    }
+  }
+  

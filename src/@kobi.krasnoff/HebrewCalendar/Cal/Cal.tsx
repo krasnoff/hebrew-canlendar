@@ -195,7 +195,6 @@ function Cal(props: Props) {
 
     useEffect(() => {
         const newDate = new Date(selectedYear, selectedMonth, 1);
-        console.log('set New Month', newDate)
         buildComponent(newDate);
         
     }, [selectedYear, selectedMonth, buildComponent]);

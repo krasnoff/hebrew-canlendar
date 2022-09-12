@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Arimo";
+    src: local("Arimo"),
+     url("../Fonts/Arimo/static/Arimo-Regular.ttf") format("truetype");
+    font-weight: 400;
+}
+
 .calWrapper {
     min-width: 20rem;
     
@@ -9,6 +16,7 @@
     
     .hebTitle {
         direction: rtl;
+        font-family: "Arimo";
     }
     
     table {
@@ -19,6 +27,10 @@
 
         td, th {
             border: 1px solid;
+
+            .hebDate {
+                font-family: "Arimo";
+            }
         }
 
         

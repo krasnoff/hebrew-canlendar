@@ -254,7 +254,7 @@ function Cal(props: Props) {
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>
                                     <div>{el?.ButtonDate.getDate()}</div>
-                                    <div>{gematriya(el.HebrewDate.getDate())}</div>
+                                    <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
                                 </div>
                             : null}
                         </td>)}

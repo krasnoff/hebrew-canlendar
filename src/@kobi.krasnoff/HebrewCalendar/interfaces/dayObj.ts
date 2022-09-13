@@ -5,4 +5,5 @@ export interface DayObj {
     HebrewDate: HDate;
     DayOfWeek: number;
     ButtonDate: Date;
+    ParashaShavua?: string;
 }

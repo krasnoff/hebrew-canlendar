@@ -5,7 +5,7 @@ import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {gematriya, HDate} from '@hebcal/core';
+import {gematriya, HDate, Sedra} from '@hebcal/core';
 import { MonthsArr } from "../enums/months";
 
 
@@ -31,6 +31,7 @@ function Cal(props: Props) {
         const monthArr: Array<WeekDateArray> = [];
         let buildDateObjIndex = 0;
         
+        
         // first week of the month
         const firstDayOfWeek = buildDateObj[0].DayOfWeek;
         for (let index = 0; index < 7; index++) {
@@ -47,12 +48,22 @@ function Cal(props: Props) {
             weeksArr = [];
 
             for (let index = 0; index < 7; index++) {
-                weeksArr.push(buildDateObj[buildDateObjIndex]);
+                const thisDate = buildDateObj[buildDateObjIndex]
+                if (index === 6) {
+                    if (thisDate && thisDate.HebrewDate) {
+                        const sedra = new Sedra(thisDate.HebrewDate.getFullYear(), true);
+                        console.log('sedra', sedra);
+                    }
+                    
+                }
+                
+                weeksArr.push(thisDate);
                 buildDateObjIndex++;
             }
             monthArr.push(weeksArr);
         } while (buildDateObjIndex < buildDateObj.length);
 
+        console.log('buildMonthObj', monthArr);
         return monthArr;
     }
 
@@ -253,8 +264,11 @@ function Cal(props: Props) {
                         {el.map((el, index) => <td key={index}>
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>
-                                    <div>{el?.ButtonDate.getDate()}</div>
-                                    <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
+                                    <div className={styles.date}>
+                                        <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
+                                        <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>
+                                    </div>
+                                    <div className={styles.desc}>ghfhf</div>
                                 </div>
                             : null}
                         </td>)}

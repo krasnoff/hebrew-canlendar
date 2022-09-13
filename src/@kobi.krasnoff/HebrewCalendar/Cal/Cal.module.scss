@@ -13,12 +13,12 @@
         flex-direction: row-reverse;
         justify-content: space-between;
     }
-    
+       
     .hebTitle {
         direction: rtl;
         font-family: "Arimo";
     }
-    
+        
     table {
         border-collapse: collapse;
         border: 1px solid;
@@ -28,9 +28,19 @@
         td, th {
             border: 1px solid;
 
-            .hebDate {
-                font-family: "Arimo";
+            .date {
+                display: flex;
+
+                .gregDate {
+
+                }
+
+                .hebDate {
+                    font-family: "Arimo";
+                }
             }
+
+            
         }
 
         

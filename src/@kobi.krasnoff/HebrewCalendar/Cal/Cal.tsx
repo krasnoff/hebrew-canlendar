@@ -5,14 +5,16 @@ import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {gematriya, HDate, Sedra} from '@hebcal/core';
+import {gematriya, HDate, HebrewCalendar, Sedra, Location, ParshaEvent} from '@hebcal/core';
 import { MonthsArr } from "../enums/months";
-
+import Coordinates from "../interfaces/coordinates";
 
 interface Props {
     language?: Language,
-    // selectedDate: Date
-    // onSelectSymbol: (selectedSymbol: Item | null) => void
+    selectedDate?: Date,
+    onSelectDate: (selectedDate: DayObj) => void,
+    coordinates?: Coordinates,
+    il?: boolean
 }
 
 function Cal(props: Props) {
@@ -20,8 +22,8 @@ function Cal(props: Props) {
     const [MonthDates, setMonthDates] = useState<Array<WeekDateArray>>([]);
     const [FirstDayMonth, setFirstDayMonth] = useState<DayObj>();
     const [LastDayMonth, setLastDayMonth] = useState<DayObj>();
-    const [selectedYear, setSelectedYear] = useState<number>((new Date()).getFullYear());
-    const [selectedMonth, setSelectedMonth] = useState<number>((new Date()).getMonth());
+    const [selectedYear, setSelectedYear] = useState<number>(props.selectedDate ? props.selectedDate.getFullYear() : (new Date()).getFullYear());
+    const [selectedMonth, setSelectedMonth] = useState<number>(props.selectedDate ? props.selectedDate.getMonth() : (new Date()).getMonth());
     const selectedYearContainer = useRef<HTMLInputElement>(null);
     const selectedMonthContainer = useRef<HTMLSelectElement>(null);
     
@@ -134,12 +136,8 @@ function Cal(props: Props) {
 
     const buildComponent = useCallback((dateObj: Date) => {
         setDatesNames();
-        // if (MonthDates.length === 0) {
-            const res = buildMonthObj(buildDateObj(dateObj));
-            setMonthDates(res);
-            // setSelectedYear(dateObj.getFullYear());
-            // setSelectedMonth(dateObj.getMonth());
-        // }
+        const res = buildMonthObj(buildDateObj(dateObj));
+        setMonthDates(res);
     }, [buildDateObj, setDatesNames]);
 
     
@@ -153,7 +151,7 @@ function Cal(props: Props) {
     }
 
     const handleClick = (obj: DayObj) => {
-        console.log('handleClick', obj)
+        props.onSelectDate(obj);
     }
 
     const getHebMonthName = (hd: HDate | undefined): string => {
@@ -207,6 +205,23 @@ function Cal(props: Props) {
     useEffect(() => {
         const newDate = new Date(selectedYear, selectedMonth, 1);
         buildComponent(newDate);
+
+        const options = {
+            year: selectedYear,
+            month: selectedMonth,
+            isHebrewYear: false,
+            candlelighting: true,
+            location: Location.lookup('San Francisco'),
+            sedrot: true,
+            omer: true,
+          };
+          const events = HebrewCalendar.calendar(options);
+          
+          for (const ev of events) {
+            const hd = ev.getDate();
+            const date = hd.greg();
+            console.log(ev, ev.renderBrief(props.language !== undefined ? props.language : Language.English),  ev instanceof ParshaEvent);
+          }
         
     }, [selectedYear, selectedMonth, buildComponent]);
     
@@ -263,7 +278,7 @@ function Cal(props: Props) {
                     { MonthDates.map((el, index) => <tr key={index}>
                         {el.map((el, index) => <td key={index}>
                             {el ?
-                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)}>
+                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper}>
                                     <div className={styles.date}>
                                         <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
                                         <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>

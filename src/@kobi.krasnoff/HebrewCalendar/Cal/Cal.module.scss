@@ -28,6 +28,10 @@
         td, th {
             border: 1px solid;
 
+            .buttonDateWrapper {
+                cursor: pointer;
+            }
+
             .date {
                 display: flex;
 

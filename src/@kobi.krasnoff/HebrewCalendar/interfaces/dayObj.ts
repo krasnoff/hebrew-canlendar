@@ -1,4 +1,4 @@
-import { HDate } from "@hebcal/core";
+import { HDate, Event } from "@hebcal/core";
 
 export interface DayObj {
     internationalDate: number;
@@ -6,4 +6,5 @@ export interface DayObj {
     DayOfWeek: number;
     ButtonDate: Date;
     ParashaShavua?: string;
+    EventObj?: Array<Event>;
 }

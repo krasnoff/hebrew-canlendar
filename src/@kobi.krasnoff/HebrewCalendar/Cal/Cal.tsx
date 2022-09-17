@@ -5,7 +5,7 @@ import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
 import { DayObj } from "../interfaces/dayObj";
 import { WeekDateArray } from "../types/WeekDateArray";
 import styles from './Cal.module.scss';
-import {gematriya, HDate, HebrewCalendar, Sedra, Location, ParshaEvent} from '@hebcal/core';
+import {gematriya, HDate, HebrewCalendar, Location, Event} from '@hebcal/core';
 import { MonthsArr } from "../enums/months";
 import Coordinates from "../interfaces/coordinates";
 
@@ -51,13 +51,13 @@ function Cal(props: Props) {
 
             for (let index = 0; index < 7; index++) {
                 const thisDate = buildDateObj[buildDateObjIndex]
-                if (index === 6) {
-                    if (thisDate && thisDate.HebrewDate) {
-                        const sedra = new Sedra(thisDate.HebrewDate.getFullYear(), true);
-                        console.log('sedra', sedra);
-                    }
+                // if (index === 6) {
+                //     if (thisDate && thisDate.HebrewDate) {
+                //         const sedra = new Sedra(thisDate.HebrewDate.getFullYear(), true);
+                //         // console.log('sedra', sedra);
+                //     }
                     
-                }
+                // }
                 
                 weeksArr.push(thisDate);
                 buildDateObjIndex++;
@@ -69,23 +69,43 @@ function Cal(props: Props) {
         return monthArr;
     }
 
+    const getHebEventsArr = useCallback(() => {
+        const options = {
+            year: selectedYear,
+            month: selectedMonth + 1,
+            isHebrewYear: false,
+            candlelighting: false,
+            location: Location.lookup('Tel Aviv'),
+            sedrot: true,
+            omer: true,
+        };
+        let events: Array<Event> = HebrewCalendar.calendar(options);
+          
+        return events;
+    }, [selectedYear, selectedMonth]);
+
     const buildDateObj = useCallback((today: Date): Array<DayObj> => {
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];
+        const hebrewEvents = getHebEventsArr();
         for (let i = 0; i < numberOfDays; i++) {
             const ButtonDate = new Date(today.getFullYear(), today.getMonth(), i + 1);
+            const hebDate =  new HDate(ButtonDate);
             const el: DayObj = {
                 internationalDate: i + 1,
                 ButtonDate: ButtonDate,
                 DayOfWeek: ButtonDate.getDay(),
-                HebrewDate: new HDate(ButtonDate)
+                HebrewDate: hebDate,
+                EventObj: hebrewEvents.filter(el => el.getDate().isSameDate(hebDate))
             }
             arr.push(el);
         }
         setFirstDayMonth(arr[0]);
         setLastDayMonth(arr[arr.length - 1]);
+        // console.log('buildDateObj', arr);
+        // console.log('getHebEventsArr', hebrewEvents);
         return arr;
-    }, []);
+    }, [getHebEventsArr]);
 
     const getNumbersPerDay = (monthIndex: number, year: number) => {
         monthIndex++;
@@ -205,23 +225,6 @@ function Cal(props: Props) {
     useEffect(() => {
         const newDate = new Date(selectedYear, selectedMonth, 1);
         buildComponent(newDate);
-
-        const options = {
-            year: selectedYear,
-            month: selectedMonth,
-            isHebrewYear: false,
-            candlelighting: true,
-            location: Location.lookup('San Francisco'),
-            sedrot: true,
-            omer: true,
-          };
-          const events = HebrewCalendar.calendar(options);
-          
-          for (const ev of events) {
-            const hd = ev.getDate();
-            const date = hd.greg();
-            console.log(ev, ev.renderBrief(props.language !== undefined ? props.language : Language.English),  ev instanceof ParshaEvent);
-          }
         
     }, [selectedYear, selectedMonth, buildComponent]);
     
@@ -283,7 +286,7 @@ function Cal(props: Props) {
                                         <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
                                         <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>
                                     </div>
-                                    <div className={styles.desc}>ghfhf</div>
+                                    <div className={styles.desc}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div>
                                 </div>
                             : null}
                         </td>)}

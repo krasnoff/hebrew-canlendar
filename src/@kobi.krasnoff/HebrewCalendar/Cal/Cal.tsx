@@ -51,21 +51,12 @@ function Cal(props: Props) {
 
             for (let index = 0; index < 7; index++) {
                 const thisDate = buildDateObj[buildDateObjIndex]
-                // if (index === 6) {
-                //     if (thisDate && thisDate.HebrewDate) {
-                //         const sedra = new Sedra(thisDate.HebrewDate.getFullYear(), true);
-                //         // console.log('sedra', sedra);
-                //     }
-                    
-                // }
-                
                 weeksArr.push(thisDate);
                 buildDateObjIndex++;
             }
             monthArr.push(weeksArr);
         } while (buildDateObjIndex < buildDateObj.length);
 
-        console.log('buildMonthObj', monthArr);
         return monthArr;
     }
 
@@ -266,6 +257,9 @@ function Cal(props: Props) {
                 {LastDayMonth?.HebrewDate ? <span>{getHebMonthName(LastDayMonth?.HebrewDate)} {gematriya((LastDayMonth as DayObj).HebrewDate.getFullYear())}</span> : null}
             </div>
             <table>
+                <colgroup>
+                    <col span={7} />
+                </colgroup>
                 <thead>
                     <tr>
                         <th>{SelectedEnum ? SelectedEnum[0] : ''}</th>
@@ -278,7 +272,7 @@ function Cal(props: Props) {
                     </tr>
                 </thead>
                 {MonthDates ? <tbody>
-                    { MonthDates.map((el, index) => <tr key={index}>
+                    { MonthDates.map((el, index) => <tr key={index} className={styles.dataTR}>
                         {el.map((el, index) => <td key={index}>
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper}>

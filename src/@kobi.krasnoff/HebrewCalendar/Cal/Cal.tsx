@@ -220,7 +220,7 @@ function Cal(props: Props) {
     }, [selectedYear, selectedMonth, buildComponent]);
     
     return (
-        <div className={styles.calWrapper}>
+        <div className={[styles.calWrapper, props.language === Language.English ? styles.calWrapperEng : null].join(' ')}>
             <div className={styles.controllers}>
                 <div><input 
                     type="text" 
@@ -280,7 +280,7 @@ function Cal(props: Props) {
                                         <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
                                         <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>
                                     </div>
-                                    <div className={styles.desc}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div>
+                                    <div className={[styles.desc, props.language === Language.English ? styles.descEng : null].join(' ')}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div>
                                 </div>
                             : null}
                         </td>)}

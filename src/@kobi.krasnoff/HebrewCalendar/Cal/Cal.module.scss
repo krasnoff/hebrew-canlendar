@@ -13,7 +13,7 @@
 }
 
 .calWrapper {
-    min-width: 20rem;
+    width: 40rem;
     
     .controllers {
         display: flex;
@@ -76,9 +76,17 @@
                         padding-bottom: 0.2em;
                     }
                 }
+
+                .descEng {
+                    text-align: left;
+                }
             }
         }
 
         
     }
+}
+
+.calWrapperEng {
+    width: 60rem;
 }

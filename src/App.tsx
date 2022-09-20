@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import Cal from './@kobi.krasnoff/HebrewCalendar/Cal/Cal';
+import Cal from './@kobi.krasnoff/Cal';
 import { DayObj } from './@kobi.krasnoff/HebrewCalendar/interfaces/dayObj';
 import { Language } from './@kobi.krasnoff/HebrewCalendar/enums/language';
 

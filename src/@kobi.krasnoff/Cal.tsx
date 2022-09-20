@@ -1,13 +1,13 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { Language } from "../enums/language";
-import { WeekdaysEnglish } from "../enums/WeekDaysEnglish";
-import { WeekdaysHebrew } from "../enums/weekdaysHebrew";
-import { DayObj } from "../interfaces/dayObj";
-import { WeekDateArray } from "../types/WeekDateArray";
+import { Language } from "./HebrewCalendar/enums/language";
+import { WeekdaysEnglish } from "./HebrewCalendar/enums/WeekDaysEnglish";
+import { WeekdaysHebrew } from "./HebrewCalendar/enums/weekdaysHebrew";
+import { DayObj } from "./HebrewCalendar/interfaces/dayObj";
+import { WeekDateArray } from "./HebrewCalendar/types/WeekDateArray";
 import styles from './Cal.module.scss';
 import {gematriya, HDate, HebrewCalendar, Location, Event} from '@hebcal/core';
-import { MonthsArr } from "../enums/months";
-import Coordinates from "../interfaces/coordinates";
+import { MonthsArr } from "./HebrewCalendar/enums/months";
+import Coordinates from "./HebrewCalendar/interfaces/coordinates";
 
 interface Props {
     language?: Language,

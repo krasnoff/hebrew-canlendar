@@ -1,12 +1,12 @@
 {
     "name": "hebrewcalendar",
-    "version": "0.9.4",
+    "version": "0.9.5",
     "description": "this is a reactJs video component which a hebrew calendar",
     "main": "Cal.tsx",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "clean": "rm -rf dist",
-      "build": "tsc && cp -r package.json README.md Cal.module.scss HebrewCalendar ./dist"
+      "build": "tsc && cp -r package.json README.md Cal.module.scss LICENSE HebrewCalendar ./dist"
     },
     "repository": {
       "type": "git",

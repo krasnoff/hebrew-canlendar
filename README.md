@@ -63,3 +63,6 @@ export enum Language {
 If ommited then the default language is english.
 
 ## Final words
+This component is based on the [hebcal-es6](https://github.com/hebcal/hebcal-es6) javascript library and has its [GPL-2.0 license](https://github.com/krasnoff/hebrew-canlendar/blob/master/LICENSE).
+
+This component was made by Kobi Krasnoff.

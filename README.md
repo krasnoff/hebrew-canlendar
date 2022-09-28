@@ -31,3 +31,16 @@ function App() {
 
 export default App;
 ```
+
+This new component has the following attributes:
+1. `onSelectDate` - This is a mandatory attributes which is activated every time the user chooses a specific date. Its argument is a `DayObj` interface which looks like this:
+```
+export interface DayObj {
+    internationalDate: number;
+    HebrewDate: HDate;
+    DayOfWeek: number;
+    ButtonDate: Date;
+    ParashaShavua?: string;
+    EventObj?: Array<Event>;
+}
+```

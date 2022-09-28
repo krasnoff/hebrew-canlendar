@@ -7,14 +7,14 @@ import { WeekDateArray } from "./HebrewCalendar/types/WeekDateArray";
 import styles from './Cal.module.scss';
 import {gematriya, HDate, HebrewCalendar, Location, Event} from '@hebcal/core';
 import { MonthsArr } from "./HebrewCalendar/enums/months";
-import Coordinates from "./HebrewCalendar/interfaces/coordinates";
+// import Coordinates from "./HebrewCalendar/interfaces/coordinates";
 
 interface Props {
     language?: Language,
     selectedDate?: Date,
     onSelectDate: (selectedDate: DayObj) => void,
-    coordinates?: Coordinates,
-    il?: boolean
+    // coordinates?: Coordinates,
+    // il?: boolean
 }
 
 function Cal(props: Props) {

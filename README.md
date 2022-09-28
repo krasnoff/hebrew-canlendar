@@ -44,3 +44,6 @@ export interface DayObj {
     EventObj?: Array<Event>;
 }
 ```
+
+   - `internationalDate` - Day of the gregorian month
+   - `HebrewDate` - An `HDate` object which describes the hebrew date object which consist the hebrew month, hebrew year, and hebrew day. more details about the `HDate` object can be found at: https://github.com/hebcal/hebcal-es6#hdate

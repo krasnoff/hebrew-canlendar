@@ -45,5 +45,21 @@ export interface DayObj {
 }
 ```
 
-    - `internationalDate` - Day of the gregorian month
-    - `HebrewDate` - An `HDate` object which describes the hebrew date object which consist the hebrew month, hebrew year, and hebrew day. more details about the `HDate` object can be found at: https://github.com/hebcal/hebcal-es6#hdate
+   - `internationalDate` - Day of the gregorian month
+   - `HebrewDate` - An `HDate` object which describes the hebrew date object which consist the hebrew month, hebrew year, and hebrew day. more details about the `HDate` object can be found at: https://github.com/hebcal/hebcal-es6#hdate
+   - `DayOfWeek` - Day of the week where Sunday is 0 and Saturday is 6.
+   - `ButtonDate` - Gergorian javascript date object.
+   - `ParashaShavua` - weekly "Parashat Hashvua" in a string object.
+   - `EventObj` - Special event object in the Jewish year. More details can be found at: https://github.com/hebcal/hebcal-es6#Event
+
+2. `selectedDate` - optional, This attribute specifies a selected date of the hebrew calendar component. if ommited then the curerent date is selected.
+3. `language` - optional, language of the compoenent:
+```
+export enum Language {
+    Hebrew = 'he',
+    English = 'en'
+}
+```
+If ommited then the default language is english.
+
+## Final words

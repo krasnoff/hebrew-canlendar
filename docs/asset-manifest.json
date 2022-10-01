@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/hebrew-calendar/static/css/main.03ca6d28.css",
+    "main.js": "/hebrew-calendar/static/js/main.b6605edd.js",
+    "static/js/787.046cd2f3.chunk.js": "/hebrew-calendar/static/js/787.046cd2f3.chunk.js",
+    "static/media/Alef-Bold.ttf": "/hebrew-calendar/static/media/Alef-Bold.658af1d8f9c927635e1d.ttf",
+    "static/media/Alef-Regular.ttf": "/hebrew-calendar/static/media/Alef-Regular.87215bd3b1e53ec07c77.ttf",
+    "index.html": "/hebrew-calendar/index.html",
+    "main.03ca6d28.css.map": "/hebrew-calendar/static/css/main.03ca6d28.css.map",
+    "main.b6605edd.js.map": "/hebrew-calendar/static/js/main.b6605edd.js.map",
+    "787.046cd2f3.chunk.js.map": "/hebrew-calendar/static/js/787.046cd2f3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.03ca6d28.css",
+    "static/js/main.b6605edd.js"
+  ]
+}

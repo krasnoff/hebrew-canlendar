@@ -3,7 +3,7 @@
 This component is a simple calendar which displays the gergorian calendar and the hebrew calendar.
 This component also shows the following:
 1. Parashot Hashvua.
-2. jewish Events
+2. Jewish Events
 
 In order to install this component simply execute the following command:
 ```

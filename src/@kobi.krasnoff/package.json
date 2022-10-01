@@ -1,6 +1,6 @@
 {
     "name": "hebrewcalendar",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "description": "this is a reactJs video component which a hebrew calendar",
     "main": "Cal.tsx",
     "scripts": {

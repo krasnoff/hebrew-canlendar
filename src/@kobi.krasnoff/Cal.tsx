@@ -14,7 +14,24 @@ interface Props {
     selectedDate?: Date,
     onSelectDate: (selectedDate: DayObj) => void,
     format?: Format,
-    customStyle?: CSSProperties
+    customCalWrapper?: CSSProperties,
+    customControllers?: CSSProperties,
+    customInputText?: CSSProperties,
+    customSelect?: CSSProperties,
+    customSelectOption?: CSSProperties,
+    customHebTitle?: CSSProperties,
+    customTable?: CSSProperties,
+    customTr?: CSSProperties,
+    customDataTr?: CSSProperties,
+    customTd?: CSSProperties,
+    customTh?: CSSProperties,
+    customSpecialEvent?: CSSProperties,
+    customSaturday?: CSSProperties,
+    customButtonDateWrapper?: CSSProperties,
+    customDate?: CSSProperties,
+    customHebDate?: CSSProperties,
+    customGregDate?: CSSProperties,
+    customDesc?: CSSProperties,
 }
 
 function Cal(props: Props) {
@@ -151,10 +168,6 @@ function Cal(props: Props) {
         setMonthDates(res);
     }, [buildDateObj, setDatesNames]);
 
-    
-
-
-
     const handleKeyDown = (evt: React.KeyboardEvent<HTMLDivElement>, obj: DayObj) => {
         if (evt.key === 'Enter') {
             console.log('handleKeyDown', evt, obj)
@@ -218,14 +231,14 @@ function Cal(props: Props) {
         buildComponent(newDate);
         
     }, [selectedYear, selectedMonth, buildComponent]);
-    
+
     return (
         <div className={[
                 styles.calWrapper, 
                 props.language === Language.English ? styles.calWrapperEng : null,
                 props.format === Format.SMALL ? styles.calWrapperSmall : null
-            ].join(' ')}>
-            <div className={styles.controllers}>
+            ].join(' ')} style={props.customCalWrapper}>
+            <div className={styles.controllers} style={props.customControllers}>
                 <div><input 
                     type="text" 
                     maxLength={4}
@@ -236,58 +249,61 @@ function Cal(props: Props) {
                       }}
                     value={selectedYear}
                     onChange={(evt: ChangeEvent) => handleSelectedYearChange(evt)}
-                    ref={selectedYearContainer}>
+                    ref={selectedYearContainer}
+                    style={props.customInputText}
+                    >
                     </input></div>
                 <div><select 
                             ref={selectedMonthContainer}
                             value={selectedMonth}
-                            onChange={(evt: ChangeEvent) => handleSelectedMonthChange(evt)}>
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
+                            onChange={(evt: ChangeEvent) => handleSelectedMonthChange(evt)}
+                            style={props.customSelect}>
+                    <option value="0" style={props.customSelectOption}>January</option>
+                    <option value="1" style={props.customSelectOption}>February</option>
+                    <option value="2" style={props.customSelectOption}>March</option>
+                    <option value="3" style={props.customSelectOption}>April</option>
+                    <option value="4" style={props.customSelectOption}>May</option>
+                    <option value="5" style={props.customSelectOption}>June</option>
+                    <option value="6" style={props.customSelectOption}>July</option>
+                    <option value="7" style={props.customSelectOption}>August</option>
+                    <option value="8" style={props.customSelectOption}>September</option>
+                    <option value="9" style={props.customSelectOption}>October</option>
+                    <option value="10" style={props.customSelectOption}>November</option>
+                    <option value="11" style={props.customSelectOption}>December</option>
                 </select></div>
             </div>
-            <div className={styles.hebTitle}>
+            <div className={styles.hebTitle} style={props.customHebTitle}>
                 {FirstDayMonth?.HebrewDate ? <span>{getHebMonthName(FirstDayMonth?.HebrewDate)} {gematriya((FirstDayMonth as DayObj).HebrewDate.getFullYear())} -</span> : null}
                 {LastDayMonth?.HebrewDate ? <span>{getHebMonthName(LastDayMonth?.HebrewDate)} {gematriya((LastDayMonth as DayObj).HebrewDate.getFullYear())}</span> : null}
             </div>
-            <table>
+            <table style={props.customTable}>
                 <colgroup>
                     <col span={7} />
                 </colgroup>
                 <thead>
-                    <tr>
-                        <th>{SelectedEnum ? SelectedEnum[0] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[1] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[2] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[3] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[4] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[5] : ''}</th>
-                        <th>{SelectedEnum ? SelectedEnum[6] : ''}</th>
+                    <tr style={props.customTr}>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[0] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[1] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[2] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[3] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[4] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[5] : ''}</th>
+                        <th style={props.customTh}>{SelectedEnum ? SelectedEnum[6] : ''}</th>
                     </tr>
                 </thead>
                 {MonthDates ? <tbody>
-                    { MonthDates.map((el, index) => <tr key={index} className={styles.dataTR}>
+                    { MonthDates.map((el, index) => <tr key={index} className={styles.dataTR} style={props.customDataTr}>
                         {el.map((el, index) => <td key={index} className={[
                                 el?.EventObj?.length && el?.EventObj?.length > 0 ? styles.specialEvent : undefined,
                                 el?.DayOfWeek === 6 ? styles.saturday : undefined,
-                            ].join(' ')}>
+                            ].join(' ')} style={{...props.customTd, ...props.customSpecialEvent, ...props.customSaturday}}>
                             {el ?
-                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper}>
-                                    <div className={styles.date}>
-                                        <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
-                                        <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>
+                                <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper} style={props.customButtonDateWrapper}>
+                                    <div className={styles.date} style={props.customDate}>
+                                        <div className={styles.hebDate} style={props.customHebDate}>{gematriya(el.HebrewDate.getDate())}</div>
+                                        <div className={styles.gregDate} style={props.customGregDate}>{el?.ButtonDate.getDate()}</div>
                                     </div>
-                                    {props.format !== Format.SMALL ? <div className={[styles.desc, props.language === Language.English ? styles.descEng : null].join(' ')}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div> : null}
+                                    {props.format !== Format.SMALL ? <div className={[styles.desc, props.language === Language.English ? styles.descEng : null].join(' ')} style={props.customDesc}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div> : null}
                                 </div>
                             : null}
                         </td>)}

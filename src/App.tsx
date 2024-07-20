@@ -9,6 +9,10 @@ function App() {
   const selectDateHandler = (sourceid: number, selectedDate: DayObj) => {
     console.log('selectDateHandler', sourceid, selectedDate);
   }
+
+  const customCalWrapper: React.CSSProperties = {
+    backgroundColor: '#faf7b6'
+  }
   
   return (
     <>
@@ -20,6 +24,18 @@ function App() {
       <div className="wrapper">
         <Cal onSelectDate={(selectedDate) => selectDateHandler(2, selectedDate)} language={Language.Hebrew} format={Format.SMALL}></Cal>
       </div>
+      <br></br>
+      <br></br>
+      <div className="wrapper">
+        <Cal 
+          onSelectDate={(selectedDate) => selectDateHandler(3, selectedDate)} 
+          language={Language.Hebrew} 
+          format={Format.SMALL}
+          customCalWrapper={customCalWrapper}
+        ></Cal>
+      </div>
+      <br></br>
+      <br></br>
     </>
   );
 }

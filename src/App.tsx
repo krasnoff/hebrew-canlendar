@@ -7,7 +7,7 @@ import { Format } from './@kobi.krasnoff/HebrewCalendar/enums/format';
 
 function App() {
   const selectDateHandler = (sourceid: number, selectedDate: DayObj) => {
-    console.log('selectDateHandler', selectedDate);
+    console.log('selectDateHandler', sourceid, selectedDate);
   }
   
   return (

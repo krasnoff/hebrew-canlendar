@@ -277,7 +277,10 @@ function Cal(props: Props) {
                 </thead>
                 {MonthDates ? <tbody>
                     { MonthDates.map((el, index) => <tr key={index} className={styles.dataTR}>
-                        {el.map((el, index) => <td key={index}>
+                        {el.map((el, index) => <td key={index} className={[
+                                el?.EventObj?.length && el?.EventObj?.length > 0 ? styles.specialEvent : undefined,
+                                el?.DayOfWeek === 6 ? styles.saturday : undefined,
+                            ].join(' ')}>
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper}>
                                     <div className={styles.date}>

@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import { Language } from "./HebrewCalendar/enums/language";
 import { WeekdaysEnglish } from "./HebrewCalendar/enums/WeekDaysEnglish";
 import { WeekdaysHebrew } from "./HebrewCalendar/enums/weekdaysHebrew";
@@ -7,14 +7,14 @@ import { WeekDateArray } from "./HebrewCalendar/types/WeekDateArray";
 import styles from './Cal.module.scss';
 import {gematriya, HDate, HebrewCalendar, Location, Event} from '@hebcal/core';
 import { MonthsArr } from "./HebrewCalendar/enums/months";
-// import Coordinates from "./HebrewCalendar/interfaces/coordinates";
+import { Format } from "./HebrewCalendar/enums/format";
 
 interface Props {
     language?: Language,
     selectedDate?: Date,
     onSelectDate: (selectedDate: DayObj) => void,
-    // coordinates?: Coordinates,
-    // il?: boolean
+    format?: Format,
+    customStyle?: CSSProperties
 }
 
 function Cal(props: Props) {
@@ -220,7 +220,11 @@ function Cal(props: Props) {
     }, [selectedYear, selectedMonth, buildComponent]);
     
     return (
-        <div className={[styles.calWrapper, props.language === Language.English ? styles.calWrapperEng : null].join(' ')}>
+        <div className={[
+                styles.calWrapper, 
+                props.language === Language.English ? styles.calWrapperEng : null,
+                props.format === Format.SMALL ? styles.calWrapperSmall : null
+            ].join(' ')}>
             <div className={styles.controllers}>
                 <div><input 
                     type="text" 
@@ -280,7 +284,7 @@ function Cal(props: Props) {
                                         <div className={styles.hebDate}>{gematriya(el.HebrewDate.getDate())}</div>
                                         <div className={styles.gregDate}>{el?.ButtonDate.getDate()}</div>
                                     </div>
-                                    <div className={[styles.desc, props.language === Language.English ? styles.descEng : null].join(' ')}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div>
+                                    {props.format !== Format.SMALL ? <div className={[styles.desc, props.language === Language.English ? styles.descEng : null].join(' ')}>{el?.EventObj?.map((el2, index) => <div key={index}>{el2.render(props.language !== undefined ? props.language : Language.English)}</div>)}</div> : null}
                                 </div>
                             : null}
                         </td>)}

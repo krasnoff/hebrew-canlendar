@@ -27,6 +27,7 @@ interface Props {
     customTh?: CSSProperties,
     customSpecialEvent?: CSSProperties,
     customSaturday?: CSSProperties,
+    customSelectedDate?: CSSProperties,
     customButtonDateWrapper?: CSSProperties,
     customDate?: CSSProperties,
     customHebDate?: CSSProperties,
@@ -308,7 +309,7 @@ function Cal(props: Props) {
                                 el?.ButtonDate === selectedDate?.ButtonDate ? styles.selectedDate : undefined,
                                 el?.EventObj?.length && el?.EventObj?.length > 0 ? styles.specialEvent : undefined,
                                 el?.DayOfWeek === 6 ? styles.saturday : undefined,
-                            ].join(' ')} style={{...props.customTd, ...props.customSpecialEvent, ...props.customSaturday}}>
+                            ].join(' ')} style={{...props.customTd, ...props.customSpecialEvent, ...props.customSaturday, ...props.customSelectedDate}}>
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper} style={props.customButtonDateWrapper}>
                                     <div className={styles.date} style={props.customDate}>

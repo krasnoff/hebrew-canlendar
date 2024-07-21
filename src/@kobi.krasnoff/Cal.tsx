@@ -43,6 +43,9 @@ function Cal(props: Props) {
     const [selectedMonth, setSelectedMonth] = useState<number>(props.selectedDate ? props.selectedDate.getMonth() : (new Date()).getMonth());
     const selectedYearContainer = useRef<HTMLInputElement>(null);
     const selectedMonthContainer = useRef<HTMLSelectElement>(null);
+    const [selectedDate, setSelectedDate] = useState<DayObj>();
+    
+    //#region inner functions
     
     // build the whole calendar object
     const buildMonthObj = (buildDateObj: Array<DayObj>): Array<WeekDateArray> => {
@@ -96,6 +99,8 @@ function Cal(props: Props) {
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];
         const hebrewEvents = getHebEventsArr();
+        const currentDate = new Date();
+        currentDate.setHours(0,0,0,0);
         for (let i = 0; i < numberOfDays; i++) {
             const ButtonDate = new Date(today.getFullYear(), today.getMonth(), i + 1);
             const hebDate =  new HDate(ButtonDate);
@@ -107,6 +112,9 @@ function Cal(props: Props) {
                 EventObj: hebrewEvents.filter(el => el.getDate().isSameDate(hebDate))
             }
             arr.push(el);
+            if (currentDate.getTime() === ButtonDate.getTime()) {
+                setSelectedDate(el);
+            }
         }
         setFirstDayMonth(arr[0]);
         setLastDayMonth(arr[arr.length - 1]);
@@ -174,10 +182,6 @@ function Cal(props: Props) {
         }
     }
 
-    const handleClick = (obj: DayObj) => {
-        props.onSelectDate(obj);
-    }
-
     const getHebMonthName = (hd: HDate | undefined): string => {
         if (hd) {
             switch (hd.getMonth()) {
@@ -231,6 +235,13 @@ function Cal(props: Props) {
         buildComponent(newDate);
         
     }, [selectedYear, selectedMonth, buildComponent]);
+
+    //#endregion
+
+    const handleClick = (obj: DayObj) => {
+        setSelectedDate(obj);
+        props.onSelectDate(obj);
+    }
 
     return (
         <div className={[
@@ -294,6 +305,7 @@ function Cal(props: Props) {
                 {MonthDates ? <tbody>
                     { MonthDates.map((el, index) => <tr key={index} className={styles.dataTR} style={props.customDataTr}>
                         {el.map((el, index) => <td key={index} className={[
+                                el?.ButtonDate === selectedDate?.ButtonDate ? styles.selectedDate : undefined,
                                 el?.EventObj?.length && el?.EventObj?.length > 0 ? styles.specialEvent : undefined,
                                 el?.DayOfWeek === 6 ? styles.saturday : undefined,
                             ].join(' ')} style={{...props.customTd, ...props.customSpecialEvent, ...props.customSaturday}}>

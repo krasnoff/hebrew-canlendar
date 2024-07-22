@@ -32,6 +32,7 @@ function App() {
           language={Language.Hebrew} 
           format={Format.SMALL}
           customCalWrapper={customCalWrapper}
+          selectedDate={new Date(2024, 6, 10)}
         ></Cal>
       </div>
       <br></br>

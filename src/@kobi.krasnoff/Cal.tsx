@@ -100,8 +100,14 @@ function Cal(props: Props) {
         const numberOfDays = getNumbersPerDay(today.getMonth(), today.getFullYear());
         const arr: Array<DayObj> = [];
         const hebrewEvents = getHebEventsArr();
-        const currentDate = new Date();
+        
+        let currentDate = new Date();
+        if (props.selectedDate) {
+            currentDate = props.selectedDate;
+        }
         currentDate.setHours(0,0,0,0);
+        
+        
         for (let i = 0; i < numberOfDays; i++) {
             const ButtonDate = new Date(today.getFullYear(), today.getMonth(), i + 1);
             const hebDate =  new HDate(ButtonDate);

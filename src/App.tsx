@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import Cal from './@kobi.krasnoff/Cal';
 import { DayObj } from './@kobi.krasnoff/HebrewCalendar/interfaces/dayObj';
@@ -6,6 +6,8 @@ import { Language } from './@kobi.krasnoff/HebrewCalendar/enums/language';
 import { Format } from './@kobi.krasnoff/HebrewCalendar/enums/format';
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  
   const selectDateHandler = (sourceid: number, selectedDate: DayObj) => {
     console.log('selectDateHandler', sourceid, selectedDate);
   }
@@ -13,6 +15,12 @@ function App() {
   const customCalWrapper: React.CSSProperties = {
     backgroundColor: '#faf7b6'
   }
+
+  useEffect(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 5);
+    setSelectedDate(d);
+  }, []);
   
   return (
     <>
@@ -32,7 +40,7 @@ function App() {
           language={Language.Hebrew} 
           format={Format.SMALL}
           customCalWrapper={customCalWrapper}
-          selectedDate={new Date(2024, 6, 10)}
+          selectedDate={selectedDate}
         ></Cal>
       </div>
       <br></br>

@@ -10,28 +10,99 @@ import { MonthsArr } from "./HebrewCalendar/enums/months";
 import { Format } from "./HebrewCalendar/enums/format";
 
 interface Props {
+    /**
+     * Sets language of the component. either Hebrew or English
+     */
     language?: Language,
+    /**
+     * Set a default date for the component
+     */
     selectedDate?: Date,
+    /**
+     * Callback function when user chooses a day in the calendar
+     * @param selectedDate A DayObj object that was chosen
+     * @returns 
+     */
     onSelectDate: (selectedDate: DayObj) => void,
+    /**
+     * general format of the component, large or small
+     */
     format?: Format,
+    /**
+     * CSS of the whole component
+     */
     customCalWrapper?: CSSProperties,
+    /**
+     * CSS of the top component
+     */
     customControllers?: CSSProperties,
+    /**
+     * CSS of the input text which represents the year
+     */
     customInputText?: CSSProperties,
+    /**
+     * CSS of the select month component
+     */
     customSelect?: CSSProperties,
+    /**
+     * CSS of the select month options component
+     */
     customSelectOption?: CSSProperties,
+    /**
+     * CSS of the custom hebrew title
+     */
     customHebTitle?: CSSProperties,
+    /**
+     * CSS of the custom table
+     */
     customTable?: CSSProperties,
+    /**
+     * CSS of the custom header row
+     */
     customTr?: CSSProperties,
+    /**
+     * CSS of the custom data row
+     */
     customDataTr?: CSSProperties,
+    /**
+     * CSS of the custom data cell
+     */
     customTd?: CSSProperties,
+    /**
+     * CSS of the custom header cell
+     */
     customTh?: CSSProperties,
+    /**
+     * CSS of the custom special event cell
+     */
     customSpecialEvent?: CSSProperties,
+    /**
+     * CSS of the custom saturday cell
+     */
     customSaturday?: CSSProperties,
+    /**
+     * CSS of the custom selected date cell
+     */
     customSelectedDate?: CSSProperties,
+    /**
+     * CSS of the custom td inner content
+     */
     customButtonDateWrapper?: CSSProperties,
+    /**
+     * CSS of the custom day in month component
+     */
     customDate?: CSSProperties,
+    /**
+     * CSS of the custom hebrew day
+     */
     customHebDate?: CSSProperties,
+    /**
+     * CSS of the custom gregorian day
+     */
     customGregDate?: CSSProperties,
+    /**
+     * CSS of the custom description
+     */
     customDesc?: CSSProperties,
 }
 
@@ -106,8 +177,7 @@ function Cal(props: Props) {
             currentDate = props.selectedDate;
         }
         currentDate.setHours(0,0,0,0);
-        
-        
+                
         for (let i = 0; i < numberOfDays; i++) {
             const ButtonDate = new Date(today.getFullYear(), today.getMonth(), i + 1);
             const hebDate =  new HDate(ButtonDate);
@@ -128,7 +198,7 @@ function Cal(props: Props) {
         // console.log('buildDateObj', arr);
         // console.log('getHebEventsArr', hebrewEvents);
         return arr;
-    }, [getHebEventsArr]);
+    }, [getHebEventsArr, props.selectedDate]);
 
     const getNumbersPerDay = (monthIndex: number, year: number) => {
         monthIndex++;
@@ -315,7 +385,12 @@ function Cal(props: Props) {
                                 el?.ButtonDate === selectedDate?.ButtonDate ? styles.selectedDate : undefined,
                                 el?.EventObj?.length && el?.EventObj?.length > 0 ? styles.specialEvent : undefined,
                                 el?.DayOfWeek === 6 ? styles.saturday : undefined,
-                            ].join(' ')} style={{...props.customTd, ...props.customSpecialEvent, ...props.customSaturday, ...props.customSelectedDate}}>
+                            ].join(' ')} style={{
+                                ...props.customTd, 
+                                ...(el?.EventObj?.length && el?.EventObj?.length > 0 ? props.customSpecialEvent : null), 
+                                ...(el?.DayOfWeek === 6 ? props.customSaturday : null), 
+                                ...(el?.ButtonDate === selectedDate?.ButtonDate ? props.customSelectedDate : null)
+                            }}>
                             {el ?
                                 <div tabIndex={0} onKeyDown={(evt) => handleKeyDown(evt, el)} onClick={() => handleClick(el)} className={styles.buttonDateWrapper} style={props.customButtonDateWrapper}>
                                     <div className={styles.date} style={props.customDate}>

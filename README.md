@@ -46,21 +46,45 @@ export interface DayObj {
 ```
 
    - `internationalDate` - Day of the gregorian month
-   - `HebrewDate` - An `HDate` object which describes the hebrew date object which consist the hebrew month, hebrew year, and hebrew day. more details about the `HDate` object can be found at: https://github.com/hebcal/hebcal-es6#hdate
+   - `HebrewDate` - An `HDate` object which describes the Hebrew date object which consists of the Hebrew month, Hebrew year, and Hebrew day. more details about the `HDate` object can be found at: https://github.com/hebcal/hebcal-es6#hdate
    - `DayOfWeek` - Day of the week where Sunday is 0 and Saturday is 6.
-   - `ButtonDate` - Gergorian javascript date object.
+   - `ButtonDate` - Gregorian javascript date object.
    - `ParashaShavua` - weekly "Parashat Hashvua" in a string object.
    - `EventObj` - Special event object in the Jewish year. More details can be found at: https://github.com/hebcal/hebcal-es6#Event
 
-2. `selectedDate` - optional, This attribute specifies a selected date of the hebrew calendar component. if ommited then the curerent date is selected.
-3. `language` - optional, language of the compoenent:
+2. `selectedDate` - optional, This attribute specifies a selected date of the Hebrew calendar component. if omitted then the current date is selected.
+3. `language` - optional, language of the component.
 ```
 export enum Language {
     Hebrew = 'he',
     English = 'en'
 }
 ```
-If ommited then the default language is english.
+5. `format` - optional, general format of the component, large or small
+
+The following attributes all all CSS customizing attributes and are React CSSProperties objects.
+
+6. `customCalWrapper` - optional, CSS of the whole component
+7. `customControllers` - optional, CSS of the top component
+8. `customInputText` - optional, CSS of the input text which represents the year
+9. `customSelect` - optional, CSS of the select month component
+10. `customSelectOption` - optional, CSS of the select month options component
+11. `customHebTitle` - optional, CSS of the custom Hebrew title
+12. `customTable` - optional, CSS of the custom table
+13. `customTr` - optional, CSS of the custom header row
+14. `customDataTr` - optional, CSS of the custom data row
+15. `customTd` - optional, CSS of the custom data cell
+16. `customTh` - optional, CSS of the custom header cell
+17. `customSpecialEvent` - optional, CSS of the custom special event cell
+18. `customSaturday` - optional, CSS of the custom Saturday cell
+19. `customSelectedDate` - optional, CSS of the custom selected date cell
+20. `customButtonDateWrapper` - optional, CSS of the custom td inner content
+21. `customDate` - optional, CSS of the custom day in month component
+22. `customHebDate` - optional, CSS of the custom Hebrew day
+23. `customGregDate` - optional, CSS of the custom Gregorian day
+24. `customDesc` - optional, CSS of the custom description
+
+If omitted then the default language is English.
 
 ## Final words
 This component is based on the [hebcal-es6](https://github.com/hebcal/hebcal-es6) javascript library and has its [GPL-2.0 license](https://github.com/krasnoff/hebrew-canlendar/blob/master/LICENSE).
